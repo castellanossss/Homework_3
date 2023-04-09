@@ -411,6 +411,12 @@ public class Presenter {
                         createXML();
                         secondDecision();
                         break;
+                    case 5:
+                        createXML();
+                        menu.printExitMessage();
+                        menu.closeScanner();
+                        System.exit(0);
+                        break;
                     default:
                         menu.printINOptionMessage();
                         firstDecision();
@@ -432,6 +438,12 @@ public class Presenter {
                 switch (decision) {
                     case 1:
                         firstDecision();
+                        break;
+                    case 2:
+                        createXML();
+                        menu.printExitMessage();
+                        menu.closeScanner();
+                        System.exit(0);
                         break;
                     default:
                         menu.printINOptionMessage();
