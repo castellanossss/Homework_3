@@ -366,5 +366,4 @@ public class Presenter {
         writeFile.addInformation(rooms);
         writeFile.createXMLFile(Constants.PATH);
     }
-    
 }
