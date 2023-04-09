@@ -252,4 +252,19 @@ public class Presenter {
 
         return roomId;
     }
+
+    public void createPatient() {
+        int roomId = eventualExistingRoom();
+        String firstName = patientView.showMessageData(Constants.ASK_FOR_PATIENT_FIRST_NAME);
+        String lastName = patientView.showMessageData(Constants.ASK_FOR_PATIENT_LAST_NAME);
+        String phoneNumber = patientView.showMessageData(Constants.ASK_FOR_PATIENT_PHONE_NUMBER);
+
+        Patient patient = new Patient(roomId, firstName, lastName, phoneNumber, Status.ACTIVE);
+
+        boolean added = overcrowedRoom(patient);
+
+        if (added) {
+            patientView.printBorderedMessage(Constants.DISPLAY_PATIENT_REGISTRATION_SUCCESS);
+        } 
+    }
 }
