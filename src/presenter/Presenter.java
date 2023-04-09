@@ -10,6 +10,7 @@ import model.Status;
 import view.Menus;
 import view.PatientRegistrationView;
 import view.RoomRegistrationView;
+import tools.Write_XML;
 
 public class Presenter {
     private Scanner io;
@@ -17,6 +18,7 @@ public class Presenter {
     private ArrayList<Room> rooms;
     private PatientRegistrationView patientView;
     private Menus menu;
+    private Write_XML writeFile;
 
     public Presenter() {
         io = new Scanner(System.in);
@@ -24,6 +26,7 @@ public class Presenter {
         rooms = new ArrayList<>();
         patientView = new PatientRegistrationView();
         menu = new Menus();
+        writeFile = new Write_XML();
     }
 
     public boolean validateRoomId(int roomId) {
@@ -356,5 +359,11 @@ public class Presenter {
             flag = true;
         }
         return flag;
+    }
+    
+    public void createXML() {
+        writeFile.createXMLStructure();
+        writeFile.addInformation(rooms);
+        writeFile.createXMLFile(Constants.PATH);
     }
 }
