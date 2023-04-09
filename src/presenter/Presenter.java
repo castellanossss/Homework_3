@@ -11,6 +11,7 @@ import view.Menus;
 import view.PatientRegistrationView;
 import view.RoomRegistrationView;
 import tools.Write_XML;
+import tools.Read_XML;
 
 public class Presenter {
     private Scanner io;
@@ -19,6 +20,7 @@ public class Presenter {
     private PatientRegistrationView patientView;
     private Menus menu;
     private Write_XML writeFile;
+    private Read_XML readFile;
 
     public Presenter() {
         io = new Scanner(System.in);
@@ -27,6 +29,7 @@ public class Presenter {
         patientView = new PatientRegistrationView();
         menu = new Menus();
         writeFile = new Write_XML();
+        readFile = new Read_XML();
     }
 
     public boolean validateRoomId(int roomId) {
@@ -366,4 +369,13 @@ public class Presenter {
         writeFile.addInformation(rooms);
         writeFile.createXMLFile(Constants.PATH);
     }
+
+    public void readXml() {
+        File file = new File(Constants.PATH);
+        if (file.exists()) {
+            readFile.read_XML_File(Constants.PATH);
+            rooms = readFile.getRooms();
+        }
+    }
+
 }
