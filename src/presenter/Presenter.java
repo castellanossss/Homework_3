@@ -148,4 +148,21 @@ public class Presenter {
 
         return beds;
     }
+
+    public Room createRoom() {
+        roomView.printBorderedTitleMessage(); 
+        int id = checkId();
+        int floorNumber = checkFloorNumber();
+        int roomNumber = checkRoomNumber(floorNumber);
+        int beds = checkBedsNumber();
+
+        Room room = new Room(id, floorNumber, roomNumber, beds);
+        rooms.add(room);
+        roomView.printBorderedMessage(Constants.DISPLAY_ROOM_REGISTRATION_SUCCESS);
+        return room;
+    }
+
+    public ArrayList<Room> getRooms() {
+        return rooms;
+    }
 }
