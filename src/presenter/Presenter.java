@@ -455,5 +455,15 @@ public class Presenter {
             }
         } while (flag);
     }
+    
+    private void run() {  
+        readXml();
+        firstDecision();
+    }
+
+    public static void main(String[] args) {
+        Presenter app = new Presenter();
+        app.run();
+    }
 
 }
