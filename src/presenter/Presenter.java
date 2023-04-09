@@ -267,4 +267,94 @@ public class Presenter {
             patientView.printBorderedMessage(Constants.DISPLAY_PATIENT_REGISTRATION_SUCCESS);
         } 
     }
+
+    public boolean validateACPatientsNotEmpty(int roomId) {
+        for (Room room : rooms) {
+            if (room.getId() == roomId) {
+                if (room.getActivePatients().isEmpty()) {
+                    patientView.printBorderedMessage(Constants.DISPLAY_EMPTY_PATIENTS_LIST_MESSAGE);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean validateINPatientsNotEmpty(int roomId) {
+        for (Room room : rooms) {
+            if (room.getId() == roomId) {
+                if (room.getInactivePatients().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public int eventualExistingIdRoom() {
+        boolean flag = true;
+        int roomId = 0;
+        do {
+            try {
+                String input = roomView.showMessageData(Constants.ASK_FOR_ROOM_PATIENTS_HISTORY);
+                roomId = Integer.parseInt(input);
+                flag = false;
+                while (!validateRoomIdExists(roomId)) {
+                    patientView.printBorderedMessage(Constants.DISPLAY_ROOM_NOT_FOUND_MESSAGE);
+                    input = roomView.showMessageData(Constants.ASK_FOR_ROOM_PATIENTS_HISTORY);
+                    roomId = Integer.parseInt(input);
+                }
+            } catch (NumberFormatException e) {
+                patientView.printBorderedMessage(Constants.DISPLAY_INPUT_TYPE_ERROR);
+                flag = true;
+            }
+        } while (flag);
+
+        return roomId;
+    }
+
+    public String showACPatientsHistory(int roomId) {
+        String message = "Active patients in room " + roomId + ":\n";
+        for (int i = 0; i < rooms.get(roomId - 1).getActivePatients().size(); i++) {
+            message += (i + 1) + ". " + rooms.get(roomId - 1).getActivePatients().get(i).getFirstName() + " " + rooms.get(roomId - 1).getActivePatients().get(i).getLastName() + " ~~ [ " + rooms.get(roomId - 1).getActivePatients().get(i).getStatus() + " ]" + "\n";
+        }
+        return message;
+    }
+
+    public String showINPatientsHistory(int roomId) {
+        System.out.println(Constants.SEPARATOR);
+        String message = "\n" + "Inactive patients in room " + roomId + ":\n";
+        for (int i = 0; i < rooms.get(roomId - 1).getInactivePatients().size(); i++) {
+            message += (i + 1) + ". " + rooms.get(roomId - 1).getInactivePatients().get(i).getFirstName() + " " + rooms.get(roomId - 1).getInactivePatients().get(i).getLastName() + " ~~ [ " + rooms.get(roomId - 1).getInactivePatients().get(i).getStatus() + " ]" + "\n";
+        }
+        return message;
+    }
+
+    public boolean showHistory() {
+        boolean flag = false;
+        String message = "";
+        if (!eventualEmptyArray()) {
+            flag = false;
+            int roomId = eventualExistingIdRoom();
+
+            if (!validateACPatientsNotEmpty(roomId)) {
+                message += showACPatientsHistory(roomId);
+            } else {
+                flag = true;
+            }
+
+            if (!validateINPatientsNotEmpty(roomId)) {
+                message += showINPatientsHistory(roomId);
+            }  else {
+                message += "\n" + "*** There are no inactive patients in room " + roomId + ". ***\n";
+                flag = true;
+            }
+
+            System.out.print(message);
+            System.out.println(Constants.SEPARATOR);
+        } else {
+            flag = true;
+        }
+        return flag;
+    }
 }
