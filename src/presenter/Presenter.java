@@ -165,4 +165,91 @@ public class Presenter {
     public ArrayList<Room> getRooms() {
         return rooms;
     }
+
+    public boolean validateRoomsNotEmpty() {
+        if (rooms.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validateRoomIdExists(int roomId) {
+        for (Room room : rooms) {
+            if (room.getId() == roomId) {
+                return true;
+            } 
+        }
+        return false;
+    }
+
+    public boolean overcrowedRoom(Patient patient) {
+        for (Room room : rooms) {
+            if (room.getId() == patient.getRoomId()) {
+                if (room.getActivePatients().size() >= room.getNumberOfBeds()) {
+                    System.out.println(Constants.SEPARATOR + "..........................................................");
+                    String m1 = Constants.OVERCROWED_M1;
+                    String m2 = Constants.OVERCROWED_M2;
+                    for (int i = 0; i < room.getActivePatients().size(); i++) {
+                        if (room.getActivePatients().get(i).getStatus() == Status.ACTIVE) {
+                            m2 += ("[ " + (i + 1) + " ] ");
+                        }
+                    }
+                    System.out.print(m1 + m2 + "\nEnter the position of the patient you want to change to INACTIVE: ");
+                    int position = Integer.parseInt(io.next());
+    
+                    room.getActivePatients().get(position - 1).setStatus(Status.INACTIVE);
+                    patientView.printBorderedMessage(Constants.DISPLAY_PATIENT_STATUS_CHANGE_SUCCESS);
+                    
+                    boolean replaced = false;
+                    for (int i = 0; i < room.getActivePatients().size(); i++) {
+                        if (room.getActivePatients().get(i).getStatus() == Status.INACTIVE) {
+                            room.addInactivePatient(room.getActivePatients().get(i));
+                            room.getActivePatients().set(i, patient);
+                            replaced = true;
+                            break;
+                        }
+                    }
+                    if (!replaced) {
+                        room.getActivePatients().add(patient);
+                    }
+                    return true;
+                } else {
+                    room.getActivePatients().add(patient);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean eventualEmptyArray() {
+        boolean isEmpty = validateRoomsNotEmpty();
+        if (isEmpty) {
+            patientView.printBorderedMessage(Constants.DISPLAY_EMPTY_ROOM_LIST_MESSAGE);
+            return true;
+        }
+        return false;
+    }
+
+    public int eventualExistingRoom() {
+        boolean flag = true;
+        int roomId = 0;
+        do {
+            try {
+                String input = patientView.showMessageData(Constants.ASK_FOR_PATIENT_ROOM_ID);
+                roomId = Integer.parseInt(input);
+                flag = false;
+                while (!validateRoomIdExists(roomId)) {
+                    patientView.printBorderedMessage(Constants.DISPLAY_ROOM_NOT_FOUND_MESSAGE);
+                    input = patientView.showMessageData(Constants.ASK_FOR_PATIENT_ROOM_ID);
+                    roomId = Integer.parseInt(input);
+                }
+            } catch (NumberFormatException e) {
+                patientView.printBorderedMessage(Constants.DISPLAY_INPUT_TYPE_ERROR);
+                flag = true;
+            }
+        } while (flag);
+
+        return roomId;
+    }
 }
