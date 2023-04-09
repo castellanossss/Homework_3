@@ -378,4 +378,70 @@ public class Presenter {
         }
     }
 
+    public void firstDecision() {
+        boolean flag = true;
+        do {
+            try {
+                String input = menu.showMainMenu();
+                int decision = Integer.parseInt(input);
+                flag = false;
+                switch (decision) {
+                    case 1:
+                        System.out.println(Constants.SEPARATOR);
+                        createRoom();
+                        secondDecision();
+                        break;
+                    case 2:
+                        if (!eventualEmptyArray()) {
+                            System.out.println(Constants.SEPARATOR);
+                            createPatient();
+                            secondDecision();
+                        }
+                        secondDecision();
+                        break;
+                    case 3:
+                        if (!eventualEmptyArray()) {
+                            System.out.println(Constants.SEPARATOR);
+                            showHistory();
+                            secondDecision();
+                        } 
+                        secondDecision();
+                        break;
+                    case 4:
+                        createXML();
+                        secondDecision();
+                        break;
+                    default:
+                        menu.printINOptionMessage();
+                        firstDecision();
+                }
+            } catch (NumberFormatException e) {
+                patientView.printBorderedMessage(Constants.DISPLAY_INPUT_TYPE_ERROR);
+                flag = true;
+            } 
+        } while (flag);
+    }
+
+    public void secondDecision() {
+        boolean flag = true;
+        do {
+            try {
+                String input = menu.showProcessedMenu();
+                int decision = Integer.parseInt(input);
+                flag = false;
+                switch (decision) {
+                    case 1:
+                        firstDecision();
+                        break;
+                    default:
+                        menu.printINOptionMessage();
+                        secondDecision();
+                }
+            } catch (NumberFormatException e) {
+                patientView.printBorderedMessage(Constants.DISPLAY_INPUT_TYPE_ERROR);
+                flag = true;
+            }
+        } while (flag);
+    }
+
 }
