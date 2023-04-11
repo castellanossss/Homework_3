@@ -19,6 +19,26 @@ public class PatientRegistrationView {
         System.out.println(border);
     }
 
+    public void printBorderedTitleHistoryMessage() {
+        String message = "Room History of Patients";
+        int length = message.length();
+        String border = "╔" + "═".repeat(length + 2) + "╗";
+        System.out.println(border);
+        System.out.println("║ " + message + " ║");
+        border = "╚" + "═".repeat(length + 2) + "╝";
+        System.out.println(border);
+    }
+
+    public void printBorderedSaveMessage() {
+        String message = "XML File Saved";
+        int length = message.length();
+        String border = "╔" + "═".repeat(length + 2) + "╗";
+        System.out.println(border);
+        System.out.println("║ " + message + " ║");
+        border = "╚" + "═".repeat(length + 2) + "╝";
+        System.out.println(border);
+    }
+
     public String showMessageData(String message) {
         System.out.print(message);
         return scanner.next();

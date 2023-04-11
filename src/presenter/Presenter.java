@@ -260,6 +260,7 @@ public class Presenter {
     }
 
     public void createPatient() {
+        patientView.printBorderedTitleMessage();
         int roomId = eventualExistingRoom();
         String firstName = patientView.showMessageData(Constants.ASK_FOR_PATIENT_FIRST_NAME);
         String lastName = patientView.showMessageData(Constants.ASK_FOR_PATIENT_LAST_NAME);
@@ -409,6 +410,7 @@ public class Presenter {
                         break;
                     case 4:
                         createXML();
+                        patientView.printBorderedSaveMessage();
                         secondDecision();
                         break;
                     case 5:
